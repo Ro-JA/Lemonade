@@ -111,24 +111,22 @@ class MainActivity : AppCompatActivity() {
         // ЧТО ДЕЛАТЬ: При нажатии на изображение в состоянии ВЫБОРА состояние должно стать СЖАТЫМ
         // Переменная размера лимона должна быть установлена с помощью метода 'pick()' в классе Lemon Tree
         // Количество выжиманий должно быть равно 0, так как мы еще не выжали ни одного лимона.
-        when (lemonSize) {
-            -1 -> {
-                lemonadeState = SQUEEZE
+        when (lemonadeState) {
+            SELECT -> {
                 lemonSize = lemonTree.pick()
                 squeezeCount = 0
+                lemonadeState = SQUEEZE
             }
-            in 2..4 -> {
+            SQUEEZE -> {
                 lemonSize--
                 squeezeCount++
+                if (lemonSize == 0) {
+                    lemonSize = -1
+                    lemonadeState = DRINK
+                }
             }
-            1 -> {
-                lemonadeState = DRINK
-                lemonSize--
-            }
-            0 -> {
-                lemonadeState = RESTART
-                lemonSize--
-            }
+            DRINK -> lemonadeState = RESTART
+            RESTART -> lemonadeState = SELECT
         }
 
         // ЧТО НУЖНО СДЕЛАТЬ: При нажатии на изображение в состоянии СЖАТИЯ количество сжатий должно быть
